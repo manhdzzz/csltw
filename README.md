@@ -1,5 +1,3 @@
-Đã suy nghĩ trong vài giây
-
 
 Dưới đây là giải thích chi tiết từng dòng CSS của bạn, theo thứ tự xuất hiện:
 
@@ -785,3 +783,271 @@ button:focus {
 ### Tổng kết
 
 * Toàn bộ CSS này tận dụng **Flexbox**, **backdrop-filter**, **box-shadow**, **border-radius** và **transitions** để tạo hiệu ứng mượt mà, giao diện kính mờ (glassmorphism) và tương tác trực quan cho form đăng nhập.
+
+
+Dưới đây là **giải thích chi tiết từng dòng CSS và JavaScript** trong code của bạn:
+
+---
+
+## **PHẦN CSS**
+
+### `@import url(...)`
+
+```css
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+```
+
+– Nhúng font chữ **Quicksand** từ Google Fonts để sử dụng trong toàn bộ trang.
+
+---
+
+### `*`, `:before`, `:after`
+
+```css
+*, :before, :after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+```
+
+– Reset CSS để đồng nhất giao diện trên mọi trình duyệt.
+– `box-sizing: border-box` giúp tính kích thước phần tử bao gồm cả border và padding.
+– `font-family: inherit` cho thẻ giả `::before`, `::after`.
+
+---
+
+### `body`
+
+```css
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-image: url(...);
+    background-repeat: no-repeat;
+}
+```
+
+– Áp dụng font chữ Quicksand.
+– Đặt ảnh nền cho trang web, **không lặp lại ảnh nền**.
+
+---
+
+### `form`
+
+```css
+form {
+    height: 590px;
+    width: 450px;
+    background-color: rgba(255, 255, 255, 0.13);
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    border-radius: 17px;
+    backdrop-filter: blur(5px);
+    border: 5px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(129, 236, 174, 0.6);
+    padding: 20px;
+}
+```
+
+– Tạo khung form login giữa màn hình (absolute + translate).
+– Nền mờ trong suốt (`rgba` + `backdrop-filter`).
+– Viền, bo góc, đổ bóng đẹp mắt.
+
+---
+
+### `form *` (tất cả phần tử trong form)
+
+```css
+form * {
+    font-family: 'Quicksand', sans-serif;
+    color: #ffffff;
+    letter-spacing: 1px;
+    outline: none;
+    border: none;
+}
+```
+
+– Mọi phần tử trong `form` dùng font Quicksand, chữ trắng, không có viền ngoài khi focus.
+
+---
+
+### `form h3`
+
+```css
+form h3 {
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 50px;
+    text-align: center;
+}
+```
+
+– Chưa dùng trong HTML hiện tại, có thể dùng cho tiêu đề chính nếu cần.
+
+---
+
+### `label`
+
+```css
+label {
+    display: block;
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: 800;
+}
+```
+
+– Nhãn văn bản cách dòng rõ ràng, chữ to và đậm.
+
+---
+
+### `input`
+
+```css
+input {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    padding: 11px 15px;
+    font-size: 14px;
+    font-weight: 300;
+    background: rgba(0, 0, 0, 0.22);
+    border: 2px solid #38363654;
+    border-radius: 5px;
+    width: 100%;
+}
+```
+
+– Ô nhập liệu nền xám trong suốt, bo góc, full chiều ngang.
+
+---
+
+### `input:hover`, `input:focus`
+
+```css
+input:hover { background: #434343; transition: all 0.50s ease; }
+input:focus { box-shadow: ..., background: #434343; }
+```
+
+– Khi rê chuột hoặc nhấn vào ô nhập: đổi màu nền + đổ bóng.
+
+---
+
+### `::placeholder`
+
+```css
+::placeholder { color: #e5e5e5; }
+```
+
+– Màu placeholder nhạt hơn cho dễ nhìn.
+
+---
+
+### `button`
+
+```css
+button {
+    margin-top: 40px;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.22);
+    border: 2px solid #38363654;
+    border-radius: 5px;
+    color: #e1e1e1;
+    padding: 8px 15px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+```
+
+– Nút đăng nhập nền trong, bo góc, chữ to, có hiệu ứng hover/focus.
+
+---
+
+### `button:hover`, `button:focus`
+
+```css
+button:hover { background: #629677; transition: all 0.50s ease; }
+button:focus { box-shadow: ..., background: #629677; }
+```
+
+– Hiệu ứng chuyển màu khi hover hoặc focus vào nút.
+
+---
+
+### `social-text`, `social-icons`, `.social-icon`
+
+– Giao diện các nút mạng xã hội.
+– Căn giữa, bo tròn, hiệu ứng đổ bóng và co lại khi focus.
+
+---
+
+## **PHẦN JAVASCRIPT**
+
+```js
+const form = document.querySelector("form");
+```
+
+– Lấy thẻ `<form>` từ DOM để thao tác khi người dùng nhấn nút.
+
+---
+
+### Xử lý sự kiện submit
+
+```js
+form.addEventListener("submit", function(e) {
+    e.preventDefault(); // Ngăn form reload trang
+```
+
+– Lấy giá trị nhập vào:
+
+```js
+const username = document.getElementById("username").value.trim();
+const password = document.getElementById("password").value.trim();
+```
+
+– Tài khoản/mật khẩu hợp lệ (mặc định là admin/admin):
+
+```js
+const validUsername = "admin";
+const validPassword = "admin";
+```
+
+– Kiểm tra:
+
+```js
+if (!username) {
+    alert("Vui lòng nhập tài khoản!");
+} else if (!password) {
+    alert("Vui lòng nhập mật khẩu!");
+} else if (username !== validUsername) {
+    alert("Tài khoản không có trên hệ thống!");
+} else if (password !== validPassword) {
+    alert("Sai mật khẩu!");
+} else {
+```
+
+– Nếu đúng: lưu trạng thái đăng nhập vào `localStorage`:
+
+```js
+localStorage.setItem('isLoggedIn', 'true');
+window.location.href = "home/index.html";
+```
+
+Chuyển trang về giao diện chính.
+
+---
+
+### Kiểm tra đã đăng nhập chưa (tránh phải login lại)
+
+```js
+if (localStorage.getItem('isLoggedIn') === 'true') {
+    window.location.href = "home/index.html";
+}
+```
+
+– Nếu người dùng đã đăng nhập rồi (localStorage có `isLoggedIn`), thì chuyển thẳng vào trang chính, **không cần hiện form login nữa**.
+
+---
